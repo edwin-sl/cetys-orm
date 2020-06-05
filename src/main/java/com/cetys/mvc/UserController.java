@@ -2,7 +2,9 @@ package com.cetys.mvc;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,9 +24,14 @@ public class UserController {
 //    }
     // end "Model Layer
     final UserRepository userRepository;
+    final DepartmentRepository departmentRepository;
 
-    public UserController(UserRepository userRepository) {
+    public UserController(
+            UserRepository userRepository,
+            DepartmentRepository departmentRepository
+            ) {
         this.userRepository = userRepository;
+        this.departmentRepository = departmentRepository;
 
         userRepository.save(new User("Edwin", "edwn@gmail.com", 30));
         userRepository.save(new User("Dania", "dania@gmail.com", 27));
@@ -70,14 +77,15 @@ public class UserController {
     }
 
     @PostMapping("/add")
-    String addUser(
+    ModelAndView addUser(
             User user,
-            Model model
+            ModelMap model
     ) {
 //        users.add(user);
         userRepository.save(user);
         model.addAttribute("users", userRepository.findAll());
-        return "users-list";
+//        return "users-list";
+        return new ModelAndView("redirect:/");
     }
 
     @GetMapping("/edit/{id}")
@@ -91,15 +99,17 @@ public class UserController {
 //                .get();
         User user = userRepository.findById(id).get();
         model.addAttribute("user", user);
+        var departments = departmentRepository.findAll();
+        model.addAttribute("departments", departments);
 
         return "user-edit";
     }
 
     @PostMapping("/update/{id}")
-    String updateUser(
+    ModelAndView updateUser(
             @PathVariable("id") int id,
             User editedUser,
-            Model model
+            ModelMap model
     ) {
 //        var user = users.stream()
 //                .filter(u -> u.getId() == id)
@@ -110,13 +120,14 @@ public class UserController {
 //        user.setAge(editedUser.getAge());
         userRepository.save(editedUser);
         model.addAttribute("users", userRepository.findAll());
-        return "users-list";
+//        return "users-list";
+        return  new ModelAndView("redirect:/");
     }
 
     @GetMapping("/delete/{id}")
-    String deleteUser(
+    ModelAndView deleteUser(
             @PathVariable("id") int id,
-            Model model
+            ModelMap model
     ) {
 //        var user = users.stream()
 //                .filter(u -> u.getId() == id)
@@ -125,6 +136,7 @@ public class UserController {
 //        users.remove(user);
         userRepository.deleteById(id);
         model.addAttribute("users", userRepository.findAll());
-        return "users-list";
+//        return "users-list";
+        return new ModelAndView("redirect:/");
     }
 }

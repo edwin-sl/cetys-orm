@@ -28,6 +28,7 @@
                 <th scope="col">Name</th>
                 <th scope="col">Email</th>
                 <th scope="col">Age</th>
+                <th scope="col">Department</th>
             </tr>
         </thead>
         <tbody>
@@ -36,6 +37,7 @@
                 <td th:text="${user.getName()}"></td>
                 <td th:text="${user.getEmail()}"></td>
                 <td th:text="${user.getAge()}"></td>
+                <th th:text="${user.getDepartment().getName()}"></th>
 
                 <td>
                     <a th:href="@{/edit/{id}(id=${user.getId()})}">Edit</a>

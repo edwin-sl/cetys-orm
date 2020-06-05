@@ -5,7 +5,7 @@
     <title>Title</title>
 </head>
 <body>
-    <form th:action="@{/update/{id}(id=${user.id})}"
+    <form th:action="@{/users/update/{id}(id=${user.id})}"
           th:object="${user}"
           method="post">
         <label for="id">Id</label>
@@ -16,6 +16,15 @@
         <input type="email" th:field="*{email}" id="email">
         <label for="age">Age</label>
         <input type="number" th:field="*{age}" id="age">
+        <label for="department">Department</label>
+        <select id="department" th:field="*{department}">
+            <option value="">Select Department</option>
+            <option
+                    th:each="departmentsItem : ${departments}"
+                    th:text="${departmentsItem.getName()}"
+                    th:value="${departmentsItem.getId()}"
+            ></option>
+        </select>
 
         <button type="submit">Edit User</button>
     </form>

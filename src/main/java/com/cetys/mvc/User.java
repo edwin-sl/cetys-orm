@@ -1,9 +1,7 @@
 package com.cetys.mvc;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 /**
  * Created by edwin on May, 2020
@@ -16,6 +14,10 @@ public class User {
     String name;
     String email;
     Integer age;
+
+    // Muchos usuarios a Un departamento
+    @ManyToOne
+    Department department;
 
     public User() {
 
@@ -57,5 +59,16 @@ public class User {
 
     public void setAge(Integer age) {
         this.age = age;
+    }
+
+    public Department getDepartment() {
+        if(department == null) {
+            department = new Department();
+        }
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
     }
 }
